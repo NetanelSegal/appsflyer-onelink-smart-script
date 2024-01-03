@@ -56,7 +56,6 @@ const checkResultForURL = async (htmlFile, url, browser) => {
             return smartscriptResult
         });
         if (result == "false") {
-            console.log(url);
             throw await page.evaluate(() => window.smartscriptResultData, htmlFile);
         }
         console.log("File " + htmlFile + " passed");

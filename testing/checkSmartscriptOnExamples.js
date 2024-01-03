@@ -31,7 +31,6 @@ const runTestOnFilesInDir = async (directoryPath) => {
                 }) + "&" + paramsObject}`;
                 if (url) {
                     console.log(url);
-
                     await checkResultForURL(htmlFile, url, browser)
                 }
             } catch (error) {

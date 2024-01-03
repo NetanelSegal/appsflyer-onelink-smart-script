@@ -97,13 +97,14 @@ const getArrFromYaml = async (filePath) => {
         if (!response.ok) {
             throw new Error(`Failed to load YAML file (${response.status} ${response.statusText})`);
         }
-
+        console.log(response);
         const yamlContent = await response.text();
         const dataArray = jsyaml.load(yamlContent);
 
         if (!Array.isArray(dataArray)) {
             throw new Error('Invalid YAML content. Expected an array.');
         }
+        console.log(dataArray);
         return dataArray;
     } catch (error) {
         console.error(error.message);

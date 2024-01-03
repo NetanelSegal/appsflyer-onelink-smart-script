@@ -30,7 +30,6 @@ const runTestOnFilesInDir = async (directoryPath) => {
                     expectedOutputUrl: encodeURIComponent(expectedOutputUrl),
                 }) + "&" + paramsObject}`;
                 if (url) {
-                    console.log(url);
                     await checkResultForURL(htmlFile, url, browser)
                 }
             } catch (error) {
@@ -58,7 +57,8 @@ const checkResultForURL = async (htmlFile, url, browser) => {
         });
 
         if (result == "false") {
-            throw await page.evaluate(() => window.smartscriptResultData);
+            console.log(url);
+            throw await page.evaluate(() => window.smartscriptResultData, htmlFile);
         }
         console.log("File " + htmlFile + " passed");
 

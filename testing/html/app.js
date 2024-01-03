@@ -18,8 +18,7 @@ const main = async () => {
         const initialScript = new Function(initialScriptString);
         initialScript()
 
-        const isSame = compareUrls(expectedOutputUrl, document.getElementById("output_url").textContent);
-
+        const isSame = await compareUrls(expectedOutputUrl, document.getElementById("output_url").textContent);
         if (isSame["diffParams"] != undefined) {
             window.smartscriptResultData = isSame
             document.getElementById("smartscript-result").textContent = "false";
@@ -69,26 +68,29 @@ function diffURLSearchParams(params1, params2) {
     return diff;
 }
 
-function compareUrls(expectedOutputUrl, resultUrl) {
+async function compareUrls(expectedOutputUrl, resultUrl) {
 
     const params1 = new URLSearchParams(expectedOutputUrl.split('?')[1]);
     const params2 = new URLSearchParams(resultUrl.split('?')[1]);
+    try {
+        const parametersToIgnore = await getArrFromYaml(yamlFilePath)
+        // Remove the parametersToIgnore from both URLSearchParams
+        parametersToIgnore.forEach((p) => {
+            params1.delete(p);
+            params2.delete(p);
+        })
 
-    const parametersToIgnore = getArrFromYaml(yamlFilePath)
-    // Remove the parametersToIgnore from both URLSearchParams
-    parametersToIgnore.forEach((p) => {
-        params1.delete(p);
-        params2.delete(p);
-    })
-
-    const isDifferentParams = diffURLSearchParams(params1, params2)
-    if (isDifferentParams) {
-        return {
-            diffParams: isDifferentParams, expectedOutputUrl,
-            resultUrl
-        };
+        const isDifferentParams = diffURLSearchParams(params1, params2)
+        if (isDifferentParams) {
+            return {
+                diffParams: isDifferentParams, expectedOutputUrl,
+                resultUrl
+            };
+        }
+        return { expectedOutputUrl, resultUrl };
+    } catch (error) {
+        throw error
     }
-    return { expectedOutputUrl, resultUrl };
 }
 
 const getArrFromYaml = async (filePath) => {
@@ -97,14 +99,12 @@ const getArrFromYaml = async (filePath) => {
         if (!response.ok) {
             throw new Error(`Failed to load YAML file (${response.status} ${response.statusText})`);
         }
-        console.log(response);
         const yamlContent = await response.text();
         const dataArray = jsyaml.load(yamlContent);
 
         if (!Array.isArray(dataArray)) {
             throw new Error('Invalid YAML content. Expected an array.');
         }
-        console.log(dataArray);
         return dataArray;
     } catch (error) {
         console.error(error.message);

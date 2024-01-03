@@ -55,7 +55,6 @@ const checkResultForURL = async (htmlFile, url, browser) => {
             const smartscriptResult = document.getElementById("smartscript-result").textContent
             return smartscriptResult
         });
-        console.log(result);
         if (result == "false") {
             console.log(url);
             throw await page.evaluate(() => window.smartscriptResultData, htmlFile);

@@ -25,7 +25,7 @@ const runTestOnFilesInDir = async (directoryPath) => {
 
                 const initialScript = await getInitialScriptFromHtmlFile(filePath);
 
-                const url = `https://check-smartscript-page.glitch.me?${new URLSearchParams({
+                const url = `https://netanelsegal.github.io/appsflyer-onelink-smart-script/testing/html/index.html?${new URLSearchParams({
                     initialScript: encodeURIComponent(initialScript),
                     expectedOutputUrl: encodeURIComponent(expectedOutputUrl),
                 }) + "&" + paramsObject}`;

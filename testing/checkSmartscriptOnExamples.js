@@ -29,8 +29,9 @@ const runTestOnFilesInDir = async (directoryPath) => {
                     initialScript: encodeURIComponent(initialScript),
                     expectedOutputUrl: encodeURIComponent(expectedOutputUrl),
                 }) + "&" + paramsObject}`;
-
                 if (url) {
+                    console.log(url);
+
                     await checkResultForURL(htmlFile, url, browser)
                 }
             } catch (error) {

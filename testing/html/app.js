@@ -18,7 +18,7 @@ const main = async () => {
         const initialScript = new Function(initialScriptString);
         initialScript()
 
-        const isSame = compareUrls(expectedOutputUrl, document.getElementById("output_url").textContent, parametersToIgnore);
+        const isSame = compareUrls(expectedOutputUrl, document.getElementById("output_url").textContent);
 
         if (isSame["diffParams"] != undefined) {
             window.smartscriptResultData = isSame
